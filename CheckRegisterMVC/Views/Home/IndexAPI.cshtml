@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<script src="~/Scripts/angular.js"></script>
+
+<script type="text/javascript">
+    var apiRegistered = true;
+    var baseURL = "/api/apireceipts"
+    var App = angular.module('App', []);
+
+
+    //All Receipts
+    App.controller('ReceiptsCtrl', function ($scope, $http) {
+        $http.get(baseURL)
+          .then(function (res) {
+              // Storing the json data object as 'receipts'
+              $scope.receipts = res.data;
+          });
+
+        $scope.loadSingleReceipt = function (id) {
+            console.log("updating");
+            $http({
+                url: baseURL + '/' + id,
+
+            }).then(function (res) {
+                loadSingleReceipt(res.data);
+            });
+        };
+    });
+
+    //SINGLE
+    App.controller('SingleReceiptCtrl', function ($scope, $http) {
+        $http.get(baseURL + '/11')
+          .then(function (res) {
+              // Storing the json data object as 'oneReceipt'
+              $scope.oneReceipt = res.data;
+          });
+        //$scope.updateStatus = function (id) {
+        //    console.log("updating");
+        //    $http({
+        //        url: baseURL + '/' + id,
+                
+        //    }).then(function (res) {
+        //        $scope.oneReceipt = res.data;  
+        //    });
+        //};
+
+        //$scope.loadDetail = loadSingleReceipt;
+
+        $scope.closeEdit = function(ref)
+        {
+            console.log(ref)
+            console.log(this.$id);
+            $(this.$id).style('display', 'hidden');
+        }
+
+        $scope.save = function()
+        {
+            console.log('putting to ' + baseURL);
+            console.log(JSON.stringify($scope.oneReceipt));
+            var payload = JSON.stringify($scope.oneReceipt);
+            //PutReceipt
+            $http.put(baseURL + '/' + $scope.oneReceipt.ID, payload, $scope.oneReceipt, {
+                //url: baseURL + '/' + $scope.oneReceipt.ID,
+                //method: 'PUT',
+                data: '{Receipt: ' + $scope.oneReceipt + '}'
+                //data: $scope.oneReceipt
+
+            }).then(function (res) {
+                $scope.oneReceipt = res.data;
+                console.log("save successfull");
+            });
+        }
+    });
+
+    //Create
+
+
+    function loadAllReceipts()
+    {
+        $.ajax({
+            url: baseURL,
+
+        }).done(allReceiptsLoaded);
+    }
+
+    //http://localhost:18271//api/apireceipts/11
+    function loadSingleReceipt(data)
+    {
+
+        
+        var $singleView = $('#singleView');
+        
+        console.log($singleView);
+        $singleView.show();
+        console.log($singleView.hidden);
+        angular.element($('#singleView')[0]).scope().oneReceipt = data;
+        /*$scope.$apply(function(){
+        // perform any model changes or method invocations here on angular app.
+        });
+        angular.element(domElement).scope()
+        $apply();*/
+
+        
+    }
+
+    function allReceiptsLoaded(payload)
+    {
+        console.log(payload);
+    }
+
+    function apiReady()
+    {
+        console.log("API Ready");
+        //loadAllAngularReceipts();
+    }
+
+    function closeEdit(ref)
+    {
+        console.log($("#singleView"))
+        $("#singleView")
+        $("#singleView").hide(true);
+    }
+
+    function Receipt()
+    {
+        this.ID; 
+        this.AccountNumber
+        this.TransactionDate
+        this.TransactionType
+        this.StoreName
+        this.Amount
+        this.Approver
+        this.Categories = new Category();
+    }
+
+    function Category()
+    {
+        this.ID
+        this.Description
+        this.Amount
+    }
+
+</script>
+<div class="jumbotron">
+    <h2>CJB Sample Project - Angular</h2>
+    
+</div>
+<div ng-app="App">
+
+    <div ng-controller="ReceiptsCtrl">
+        <ul>
+            <li ng-repeat="Receipt in receipts">
+                <p ng-click="loadSingleReceipt(Receipt.ID);">{{Receipt.ID}} - {{Receipt.StoreName}} - {{Receipt.Amount}}</p>
+            </li>
+        </ul>
+
+        
+    </div>
+    <div id="singleView" ng-controller="SingleReceiptCtrl">
+        singe item
+        <p ng-bind="oneReceipt.ID"></p>
+        <p ng-bind="oneReceipt.StoreName"></p>
+        <input type="text" ng-value="oneReceipt.StoreName" />
+        <p onclick="closeEdit()">cancel</p>
+        <p ng-click="save()">Save</p>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <a >new</a>
+    </div>
+</div>

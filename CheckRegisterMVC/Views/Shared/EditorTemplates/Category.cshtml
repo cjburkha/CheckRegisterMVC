@@ -1,0 +1,90 @@
+﻿@model CheckRegisterMVC.Models.Category
+
+@*Use this for share code
+    @Html.Partial("EditFieldsPartial")*@
+@*Source
+    http://www.mattlunn.me.uk/blog/2014/08/how-to-dynamically-via-ajax-add-new-items-to-a-bound-list-model-in-asp-mvc-net/
+*@
+
+    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+
+    <div id="CategoryData">
+        <input type="hidden" name="Categories.Index" value="a" />
+        <span>Description</span><input type="text" name="Categories[a].Description" />
+        <span>Amount</span><input type="text" name="Categories[a].Amount" />
+        <img src="~/images/icons/delete.png" onclick="deleteCategory(this);" />
+    </div>
+    <div id="AdditionalCategoryData"></div>
+
+
+<p onclick="newCategory();">add category</p>
+
+
+
+<script type="text/javascript">
+
+    var addedCats = 0;
+    function deleteCategory(ref)
+    {
+        var containerDiv = ref.parentNode;
+        console.log(containerDiv);
+        console.log($(ref).parent());
+        if ($(ref).parent().attr('id') == 'CategoryData')
+            alert('Cannot remove last category, for demo only. actual implementation would permit')
+        else
+            $(ref).parent().remove();
+    }
+
+    function newCategory()
+    {
+        addedCats++;
+        var $catData = $('#CategoryData');
+        var $AdditionalCatData = $('#AdditionalCategoryData');
+        var $categoryHolder = $('<div class="categoryHolder"></div>');
+        var indexNodeHTML = $catData.children()[0].outerHTML;
+        var labelNodeHTML = $catData.children()[1].outerHTML;
+        var inputNodeHTML = $catData.children()[2].outerHTML;
+        var amountLabelNodeHTML = $catData.children()[3].outerHTML;
+        var amountInputNodeHTML = $catData.children()[4].outerHTML;
+        var deleteNodeHTML = $catData.children()[5].outerHTML;
+        
+        console.log(indexNodeHTML);
+        console.log(labelNodeHTML);
+        var IndexString = 'value="' + generateIndexAttribute(addedCats) + '"'
+        indexNodeHTML = indexNodeHTML.replace('value="a"', IndexString)
+        inputNodeHTML = inputNodeHTML.replace('[a]', '[' + generateIndexAttribute(addedCats) + ']');
+        amountInputNodeHTML = amountInputNodeHTML.replace('[a]', '[' + generateIndexAttribute(addedCats) + ']');
+        
+        console.log(indexNodeHTML);
+        console.log(inputNodeHTML);
+        console.log($categoryHolder);
+        
+        //append the new nodes to the additional data div
+        $categoryHolder.append($(indexNodeHTML));
+        $categoryHolder.append($.parseHTML(labelNodeHTML));
+        $categoryHolder.append($.parseHTML(inputNodeHTML));
+        $categoryHolder.append($.parseHTML(amountLabelNodeHTML));
+        $categoryHolder.append($.parseHTML(amountInputNodeHTML));
+        $categoryHolder.append($.parseHTML(deleteNodeHTML));
+        console.log($categoryHolder);
+        //append the new div
+        $AdditionalCatData.append($categoryHolder);
+        //$AdditionalCatData.append($(indexNodeHTML));
+        
+
+    }
+
+    function generateIndexAttribute(numCat)
+    {
+        var prefix = 'a'
+        var newIndexName = prefix + addedCats;
+        return newIndexName
+    }
+</script>
+
+
+@*<input type="hidden" name="Locations.Index" value="2" />
+Description<input type="text" name="Category[2].Description" />*@
+@*<input class="form-control text-box single-line" id="Locations_0__Description" name="Locations[0].Description" type="text" value="" />*@
+
+

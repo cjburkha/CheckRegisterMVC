@@ -1,0 +1,204 @@
+﻿@model CheckRegisterMVC.Models.Receipt
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+<style type="text/css">
+    .field-validation-valid
+{
+    display: none;
+}
+.validation-summary-valid
+{
+    display: none;
+}
+
+</style>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Receipt</h4>
+        <hr />
+        @Html.ValidationSummary(true, "Please check all fields", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.AccountNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactionDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TransactionDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TransactionDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactionType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TransactionType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TransactionType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StoreName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StoreName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StoreName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Approver, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Approver, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Approver, "", new { @class = "text-danger" })
+            </div>
+        </div>
+  
+        @*Could also do a modal*@
+        @*More info here: http://stackoverflow.com/questions/14038392/editorfor-ienumerablet-with-templatename/18974918#18974918*@
+        
+
+        @*This style from http://stackoverflow.com/questions/20278362/editorfor-for-a-list-of-complex-type-mvc*@
+        @for (int i = 0; i < Model.Categories.Count; i++)
+
+        {
+            <div>
+                <input type="hidden" name="Categories.Index" value="@i" />
+                <span>Description</span><input type="text" name="@("Categories[" + i + "].Description")" value="@Model.Categories[i].Description" />
+                <span>Amount</span><input type="text" name="@("Categories[" + i + "].Amount")" value="@Model.Categories[i].Amount" />
+                <img src="~/images/icons/delete.png" onclick="deleteCategory(this);" />
+            </div>
+        }
+        @Html.ValidationMessageFor(model => model.Categories, "", new { @class = "text-danger" })
+        
+        <div id="CategoryDataTemplate" style="display: none;">
+            
+            <span>Description</span><input type="text" name="Categories[a].Description" />
+            <span>Amount</span><input type="text" name="Categories[a].Amount" />
+            <img src="~/images/icons/delete.png" onclick="deleteCategory(this);" />
+        </div>
+        <div id="AdditionalCategoryData"></div>
+
+
+        <p onclick="newCategory();">add category</p>
+
+
+
+        <script type="text/javascript">
+
+    var addedCats = 0;
+    function deleteCategory(ref)
+    {
+        var containerDiv = ref.parentNode;
+        console.log(containerDiv);
+        console.log($(ref).parent());
+        if ($(ref).parent().attr('id') == 'CategoryDataTemplate')
+            alert('Cannot remove last category, for demo only. actual implementation would permit')
+        else
+            $(ref).parent().remove();
+    }
+
+    function newCategory()
+    {
+        addedCats++;
+        var $catData = $('#CategoryDataTemplate');
+        var $AdditionalCatData = $('#AdditionalCategoryData');
+        var $categoryHolder = $('<div class="categoryHolder"></div>');
+        var indexNodeHTML = '<input type="hidden" name="Categories.Index" value="a" />';//$catData.children()[0].outerHTML;
+        var labelNodeHTML = $catData.children()[0].outerHTML;
+        var inputNodeHTML = $catData.children()[1].outerHTML;
+        var amountLabelNodeHTML = $catData.children()[2].outerHTML;
+        var amountInputNodeHTML = $catData.children()[3].outerHTML;
+        var deleteNodeHTML = $catData.children()[4].outerHTML;
+
+        //$catData.css('display', 'block');
+        console.log(indexNodeHTML);
+        console.log(labelNodeHTML);
+        var IndexString = 'value="' + generateIndexAttribute(addedCats) + '"'
+        indexNodeHTML = indexNodeHTML.replace('value="a"', IndexString)
+        inputNodeHTML = inputNodeHTML.replace('[a]', '[' + generateIndexAttribute(addedCats) + ']');
+        amountInputNodeHTML = amountInputNodeHTML.replace('[a]', '[' + generateIndexAttribute(addedCats) + ']');
+
+        console.log(indexNodeHTML);
+        console.log(inputNodeHTML);
+        console.log($categoryHolder);
+
+        //append the new nodes to the additional data div
+        $categoryHolder.append($(indexNodeHTML));
+        $categoryHolder.append($.parseHTML(labelNodeHTML));
+        $categoryHolder.append($.parseHTML(inputNodeHTML));
+        $categoryHolder.append($.parseHTML(amountLabelNodeHTML));
+        $categoryHolder.append($.parseHTML(amountInputNodeHTML));
+        $categoryHolder.append($.parseHTML(deleteNodeHTML));
+        console.log($categoryHolder);
+        //append the new div
+        $AdditionalCatData.append($categoryHolder);
+        //$AdditionalCatData.append($(indexNodeHTML));
+
+
+    }
+
+    function generateIndexAttribute(numCat)
+    {
+        var prefix = 'a'
+        var newIndexName = prefix + addedCats;
+        return newIndexName
+    }
+        </script>
+                
+        @*
+            works, except it runs for each one on postback
+            <fieldset style="border-width: 1px;">
+            <legend>@Html.DisplayNameFor(model => Model.Categories)</legend>
+            
+            <div class="form-group">
+
+                <div class="col-md-10">
+                    @Html.EditorFor(model => Model.Categories, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => Model.Categories, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </fieldset>*@
+      
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" onclick="return customValid();" />
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    function customValid()
+    {
+        //return false;
+    }
+
+</script>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

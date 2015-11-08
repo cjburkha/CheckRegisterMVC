@@ -1,0 +1,20 @@
+﻿@*@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
+
+@model dynamic
+
+@{ 
+    ViewBag.Title = "CJB";
+}
+
+<h2>Index for @ViewBag.Message</h2>
+
+<p> My Repeater</p>
+@foreach (var r in Model)
+{
+    <li>@r.StoreName</li>
+
+}
+
+

@@ -1,0 +1,65 @@
+﻿@model CheckRegisterMVC.Models.Receipt
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Receipt</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StoreName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StoreName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Categories)
+        </dt>
+        @foreach (var c in Model.Categories)
+        {
+            <dd>@Html.DisplayFor(f => c.Description) : @Html.DisplayFor(f => c.Amount)</dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
