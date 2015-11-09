@@ -12,70 +12,180 @@
 
     //All Receipts
     App.controller('ReceiptsCtrl', function ($scope, $http) {
-        $http.get(baseURL)
+        
+
+        $scope.loadAll = function () {
+            $http.get(baseURL)
           .then(function (res) {
               // Storing the json data object as 'receipts'
               $scope.receipts = res.data;
+              $scope.display = true;
           });
-
+        }
         $scope.loadSingleReceipt = function (id) {
             console.log("updating");
             $http({
                 url: baseURL + '/' + id,
 
             }).then(function (res) {
+                $scope.display = false;
                 loadSingleReceipt(res.data);
+                //IF error set $scope.error to error and it will show
+                $scope.display = "Saved";
             });
         };
-    });
 
-    //SINGLE
-    App.controller('SingleReceiptCtrl', function ($scope, $http) {
-        $http.get(baseURL + '/11')
-          .then(function (res) {
-              // Storing the json data object as 'oneReceipt'
-              $scope.oneReceipt = res.data;
-          });
-        //$scope.updateStatus = function (id) {
-        //    console.log("updating");
-        //    $http({
-        //        url: baseURL + '/' + id,
-                
-        //    }).then(function (res) {
-        //        $scope.oneReceipt = res.data;  
-        //    });
-        //};
+        $scope.loadAll();
 
-        //$scope.loadDetail = loadSingleReceipt;
-
-        $scope.closeEdit = function(ref)
-        {
-            console.log(ref)
-            console.log(this.$id);
-            $(this.$id).style('display', 'hidden');
-        }
-
-        $scope.save = function()
-        {
-            console.log('putting to ' + baseURL);
-            console.log(JSON.stringify($scope.oneReceipt));
-            var payload = JSON.stringify($scope.oneReceipt);
-            //PutReceipt
-            $http.put(baseURL + '/' + $scope.oneReceipt.ID, payload, $scope.oneReceipt, {
-                //url: baseURL + '/' + $scope.oneReceipt.ID,
-                //method: 'PUT',
-                data: '{Receipt: ' + $scope.oneReceipt + '}'
-                //data: $scope.oneReceipt
-
-            }).then(function (res) {
-                $scope.oneReceipt = res.data;
-                console.log("save successfull");
-            });
-        }
     });
 
     //Create
+    App.controller('CreateReceiptCtrl', function ($scope, $http) {
+        $scope.newReceipt = new Receipt();
 
+        $scope.add = function () {
+            console.log("updating");
+            if (!$scope.validateCategory())
+            {
+                $scope.error = true;
+                return;
+            }
+                
+            if ($scope.newReceipt.ID)
+            {
+                console.log($scope.newReceipt.ID)
+                $scope.update();
+                return;
+            }
+            $http.post(baseURL, JSON.stringify($scope.newReceipt), {
+            }).then(function (res) {
+                
+                console.log(res);
+                $("#createReceipt").hide();
+                reloadList();
+            });
+        };
+
+        $scope.update = function () {
+            console.log("in updated");
+            var payload = JSON.stringify($scope.newReceipt);
+            //PutReceipt
+            $http.put(baseURL + '/' + $scope.newReceipt.ID, payload, $scope.newReceipt, {
+
+            }).then(function (res) {
+                console.log('result of save was ' + res);
+                reloadList();
+                $("#createReceipt").hide();
+            });
+
+        }
+
+
+        $scope.edit = function (data) {
+            console.log("edit");
+            $("#createReceipt").show();
+            $scope.newReceipt = data;
+        }
+
+        $scope.createReceipt = function () {
+
+            console.log("in create receipt");
+            //If you  set the new receipt before showing the form, the form will not update your gonna have a bad time 
+            $("#createReceipt").show();
+            $scope.newReceipt = new Receipt();
+            $scope.active = false;
+            console.log($scope.active);
+            console.log('should always be one on create ' + $scope.newReceipt.Categories.length);
+            //call apply, not sure why you have to. Probably because the form is not on the page
+            //http://jimhoskins.com/2012/12/17/angularjs-and-apply.html
+            //$scope.$apply();
+        }
+        $scope.addCategory = function () {
+            $scope.newReceipt.Categories.push(new Category);
+        }
+
+        $scope.removeCategory = function (catToRemove) {
+            var indexOfCat = $scope.newReceipt.Categories.indexOf(catToRemove);
+            $scope.newReceipt.Categories.splice(indexOfCat, 1);
+        }
+
+        $scope.validateCategory = function()
+        {
+            console.log('validating');
+            var catTotal = 0;
+            for (var i = 0; i <= $scope.newReceipt.Categories.length-1; i++)
+            {
+                catTotal = catTotal+  $scope.newReceipt.Categories[i].Amount + 0
+            }
+            console.log(catTotal)
+            return catTotal == $scope.newReceipt.Amount
+        }
+
+        $scope.cancel = function () {
+            //$scope.show = false;
+            angular.element($('#listView')[0]).scope().loadAll();
+            $("#createReceipt").hide();
+        }
+
+    });
+
+
+    
+    //SINGLE / Edit
+    //App.controller('SingleReceiptCtrl', function ($scope, $http) {
+    //    $http.get(baseURL + '/11')
+    //      .then(function (res) {
+    //          // Storing the json data object as 'oneReceipt'
+    //          $scope.oneReceipt = res.data;
+    //      });
+    //    //$scope.updateStatus = function (id) {
+    //    //    console.log("updating");
+    //    //    $http({
+    //    //        url: baseURL + '/' + id,
+                
+    //    //    }).then(function (res) {
+    //    //        $scope.oneReceipt = res.data;  
+    //    //    });
+    //    //};
+
+    //    //$scope.loadDetail = loadSingleReceipt;
+
+        
+
+    //    $scope.save = function()
+    //    {
+    //        console.log('putting to ' + baseURL);
+    //        console.log(JSON.stringify($scope.oneReceipt));
+    //        var payload = JSON.stringify($scope.oneReceipt);
+    //        //PutReceipt
+    //        $http.put(baseURL + '/' + $scope.oneReceipt.ID, payload, $scope.oneReceipt, {
+    //            //url: baseURL + '/' + $scope.oneReceipt.ID,
+    //            //method: 'PUT',
+    //            //data: '{Receipt: ' + $scope.oneReceipt + '}'
+    //            //data: $scope.oneReceipt
+
+    //        }).then(function (res) {
+    //            //$scope.oneReceipt = res.data;
+    //            console.log('result of save was ' + res);
+    //        });
+    //    }
+    //});
+
+    
+
+    function reloadList()
+    {
+        //this is not the right way to do it. there should be a service or something to handle inter controller
+        //communication
+        angular.element($('#listView')[0]).scope().loadAll();
+    }
+
+    function addComplete()
+    {
+        reloadList();
+        $('#ReceiptsCtrl').show();
+        //$('#createReceipt').hide();
+    }
 
     function loadAllReceipts()
     {
@@ -86,6 +196,7 @@
     }
 
     //http://localhost:18271//api/apireceipts/11
+    //Outside of list controler because we need to load in detail
     function loadSingleReceipt(data)
     {
 
@@ -93,16 +204,18 @@
         var $singleView = $('#singleView');
         
         console.log($singleView);
-        $singleView.show();
-        console.log($singleView.hidden);
-        angular.element($('#singleView')[0]).scope().oneReceipt = data;
-        /*$scope.$apply(function(){
-        // perform any model changes or method invocations here on angular app.
-        });
-        angular.element(domElement).scope()
-        $apply();*/
+        //$singleView.show();
+        //createReceipt
+        //angular.element($('#singleView')[0]).scope().oneReceipt = data;
+        angular.element($('#createReceipt')[0]).scope().edit(data);
+        
 
         
+    }
+
+    function newReceipt()
+    {
+        angular.element($('#createReceipt')[0]).scope().createReceipt();
     }
 
     function allReceiptsLoaded(payload)
@@ -116,30 +229,32 @@
         //loadAllAngularReceipts();
     }
 
-    function closeEdit(ref)
+    function closeView(ref)
     {
-        console.log($("#singleView"))
-        $("#singleView")
-        $("#singleView").hide(true);
+        //this only works if we have same page structure
+        console.log("closing edit");
+        console.log($("#" + ref))
+        $("#" + ref).hide();
+        
     }
 
     function Receipt()
     {
         this.ID; 
-        this.AccountNumber
-        this.TransactionDate
-        this.TransactionType
-        this.StoreName
-        this.Amount
-        this.Approver
-        this.Categories = new Category();
+        this.AccountNumber = "55";
+        this.TransactionDate = "11/7/2015";
+        this.TransactionType = 1
+        this.StoreName = "Menards"
+        this.Amount = 55.00;
+        this.Approver = "Larry";
+        this.Categories = [new Category()];
     }
 
     function Category()
     {
         this.ID
-        this.Description
-        this.Amount
+        this.Description ="Houshold"
+        this.Amount = 55.00;
     }
 
 </script>
@@ -149,28 +264,69 @@
 </div>
 <div ng-app="App">
 
-    <div ng-controller="ReceiptsCtrl">
+    <div id="listView" ng-controller="ReceiptsCtrl" ng-show="display" style="width: 300px;">
         <ul>
             <li ng-repeat="Receipt in receipts">
-                <p ng-click="loadSingleReceipt(Receipt.ID);">{{Receipt.ID}} - {{Receipt.StoreName}} - {{Receipt.Amount}}</p>
+                <p ng-click="loadSingleReceipt(Receipt.ID);">{{Receipt.ID}} - {{Receipt.StoreName}} - {{Receipt.Amount}} <a>Edit</a></p>
             </li>
         </ul>
 
-        
+
     </div>
-    <div id="singleView" ng-controller="SingleReceiptCtrl">
-        singe item
+    @*<div id="singleView" ng-controller="SingleReceiptCtrl" style="display: none;">
+        Edit item
         <p ng-bind="oneReceipt.ID"></p>
         <p ng-bind="oneReceipt.StoreName"></p>
         <input type="text" ng-value="oneReceipt.StoreName" />
-        <p onclick="closeEdit()">cancel</p>
-        <p ng-click="save()">Save</p>
+
+        <p>
+            <a onclick="closeView(this); reloadList();">cancel</a>
+            <a ng-click="save()">Save</a>
+        </p>
+
+    </div>*@
+
+    <!-- messy, we should have two controlers for edit / create with shared code-->
+    <div id="createReceipt" ng-controller="CreateReceiptCtrl" style="display: none; width: 300px">
+        <p style="font-weight: bold;">Create Receipt</p>
+
+        <p class="formLine">Transaction Date:<input type="text" ng-value="newReceipt.TransactionDate" /></p>
+        <p class="formLine">
+            Transaction Type:<input type="number" ng-value="newReceipt.TransactionType" />
+        <p class="formLine">
+            Account Number:<input type="number" ng-value="newReceipt.AccountNumber" />
+        <p class="formLine">
+            Store Name:<input type="text" ng-value="newReceipt.StoreName" />
+        <p class="formLine">
+            Amount:<input type="number" ng-value="newReceipt.Amount" />
+        <p class="formLine">
+            Approver:<input type="text" ng-value="newReceipt.Approver" />
+        <div id="categories" style="border-width: 1px;">
+            
+            <p style="font-weight: bold; margin-top: 10px;">Categories</p>
+            <p ng-repeat="Category in newReceipt.Categories">
+                
+                Description:<input type="text" ng-model="Category.Description" ng-value="Category.Description" />
+                Amount:<input type="number" ng-model="Category.Amount" ng-value="Category.Amount" />
+                <a>Delete</a>
+                <img ng-click="removeCategory(Category)" src="~/images/icons/delete.png" />
+
+            </p>
+            <a ng-click="addCategory()">Add Category</a>
+            <p class="formLine" style="color: red;" ng-show="error">Amounts of all categories must == Amount</p>
+        </div>
+        
+        <p>
+            <a ng-click="cancel();" >Cancel</a>
+            <a ng-click="add()">Save</a>
+        </p>
     </div>
 
-</div>
+
+
 
 <div class="row">
     <div class="col-md-4">
-        <a >new</a>
+        <a onclick="newReceipt();" >new</a>
     </div>
 </div>

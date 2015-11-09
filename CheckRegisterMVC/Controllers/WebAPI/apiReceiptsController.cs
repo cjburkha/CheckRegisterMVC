@@ -39,39 +39,9 @@ namespace CheckRegisterMVC.Controllers.WebAPI
 
         // PUT: api/apiReceipts/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutReceipt(int id, Object model)
+        public IHttpActionResult PutReceipt(int id, Receipt receipt)
         {
-            //was Receipt receipt
-            var jsonString = model.ToString();
-            JsonSerializer converter = new JsonSerializer();
-            var settings = new JsonSerializerSettings
-            {
-                Error = (sender, args) =>
-                {
-                    if (System.Diagnostics.Debugger.IsAttached)
-                    {
-                        System.Diagnostics.Debugger.Break();
-                    }
-                }
-            };
-            //settings.
-            settings.MissingMemberHandling = MissingMemberHandling.Error;
-
-            
-            Receipt receipt = JsonConvert.DeserializeObject<Receipt>(jsonString, settings);
-
-            //Workaround because receipt contains no categories
-            if (jsonString.Contains("Categories"))
-            {
-                
-                String catString = (String)jsonString.Split(new String[] { "Categories" }, StringSplitOptions.None)[1];
-                catString = catString.Substring(catString.IndexOf(":")+1, catString.IndexOf("]") - catString.IndexOf(":"));
-                receipt.Categories = JsonConvert.DeserializeObject<List<Category>>(catString, settings);
-            }
-
-            //validate the correct type
-            Validate<Receipt>(receipt);
-            
+                       
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -83,7 +53,10 @@ namespace CheckRegisterMVC.Controllers.WebAPI
             }
 
             db.Entry(receipt).State = EntityState.Modified;
-
+            //wouldn't want to blindly set for large objects, but for just one child it is ok
+            //var e = db.Entry(receipt);
+            //e.Collection(p => p.Categories).EntityEntry = true;
+            //db.Entry(receipt.Categories).State = EntityState.Modified;
             try
             {
                 db.SaveChanges();
