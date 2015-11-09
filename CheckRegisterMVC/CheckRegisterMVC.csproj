@@ -1060,8 +1060,9 @@
     <Content Include="Views\Receipts\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Category.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Category.cshtml" />
-    <Content Include="Views\Home\IndexAPI.cshtml" />
+    <Content Include="Views\Home\delete_IndexAPI.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Receipts\IndexAPI.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

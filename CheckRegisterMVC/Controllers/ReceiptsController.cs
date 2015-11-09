@@ -14,7 +14,10 @@ namespace CheckRegisterMVC.Controllers
     public class ReceiptsController : Controller
     {
         private ReceiptContext db = new ReceiptContext();
-
+        public ActionResult IndexAPI()
+        {
+            return View(db.Receipts.ToList());
+        }
         // GET: Receipts
         public ActionResult Index()
         {
