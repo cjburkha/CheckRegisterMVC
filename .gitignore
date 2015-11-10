@@ -31,10 +31,11 @@ $RECYCLE.BIN/
 # Thumbnails
 ._*
 
-# Files that might appear on external disk
+# visual studio files
 bin/
 obj/
 App_Data/
+.sou
 
 # Files that might appear on external disk
 .Spotlight-V100
