@@ -218,7 +218,7 @@
     <h2>CJB Sample Project - Angular</h2>
     
 </div>
-<div ng-app="App">
+<div>
 
     <div id="listView" ng-controller="ReceiptsCtrl" ng-show="display" style="width: 300px;">
         <ul>
@@ -257,13 +257,14 @@
             </p>
             <a ng-click="addCategory()">Add Category</a>
             <p class="formLine" style="color: red;" ng-show="error">Amounts of all categories must == Amount</p>
+            <p style="text-align: center; padding-top: 10px;">
+                <a ng-click="cancel();" >Cancel</a>
+                <a style="margin-left: 20px;" ng-click="add()">Save</a>
+            </p>
         </div>
-        
-        <p style="text-align: center; padding-top: 10px;">
-            <a ng-click="cancel();" >Cancel</a>&nbsp;&nbsp;
-            <a style="margin-left: 20px;" ng-click="add()">Save</a>
-        </p>
+
     </div>
+</div>
 
 
 

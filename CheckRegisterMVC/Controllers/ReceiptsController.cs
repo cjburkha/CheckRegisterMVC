@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using CheckRegisterMVC.Models;
-using CheckRegisterMVC.Data;
 
 //all code from http://www.asp.net/mvc/overview/getting-started/introduction/getting-started
 //multiple context from here: http://www.codeproject.com/Tips/801628/Code-First-Migration-in-Multiple-DbContext
@@ -15,7 +12,7 @@ namespace CheckRegisterMVC.Controllers
 {
     public class ReceiptsController : Controller
     {
-        private ReceiptContext db = new ReceiptContext();
+        private IReceiptContext db = new ReceiptContext();
 
         // GET: Receipts/IndexAPI
         public ActionResult IndexAPI()
@@ -78,7 +75,7 @@ namespace CheckRegisterMVC.Controllers
                 {
                     //Edit
                     //db.Entry(receipt).State = EntityState.Modified;
-                    ReceiptRepository.copyChanges(receipt.ID, receipt, ref db);
+                    db.CopyChanges(receipt.ID, receipt);
                 }
 
                 //Validation errors should be caught and can be interrigated with 

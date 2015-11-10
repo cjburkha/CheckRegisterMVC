@@ -4,3 +4,6 @@
 ·        The form should have the ability to enter an account, date, transaction type, store name, amount and multiple categories
 ·        You should be able to split the total amount and assign individual amounts to each category
 ·        Validation to ensure the split amounts equal the total amount of the receipt. 
+
+more advanced EF here https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application
+

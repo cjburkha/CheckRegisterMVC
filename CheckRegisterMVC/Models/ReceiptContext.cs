@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace CheckRegisterMVC.Models
 {
@@ -19,15 +17,8 @@ namespace CheckRegisterMVC.Models
         {
         }
 
-        public void MarkAsModified(Receipt item)
-        {
-            Entry(item).State = EntityState.Modified;
-        }
+        
 
-        //public List<TransactionType> GetSet()
-        //{
-        //    return TransactionTypes.set
-        //}
 
         public System.Data.Entity.DbSet<CheckRegisterMVC.Models.Receipt> Receipts { get; set; }
 
@@ -36,5 +27,54 @@ namespace CheckRegisterMVC.Models
         public System.Data.Entity.DbSet<CheckRegisterMVC.Models.CategoryOption> CategoryOptions { get; set; }
 
         public System.Data.Entity.DbSet<CheckRegisterMVC.Models.TransactionType> TransactionTypes { get; set; }
+
+        public void CopyChanges(int id, Receipt receipt)
+        {
+            Receipt recToModify = this.Receipts.Where(c => c.ID == id).Include("Categories").SingleOrDefault();
+            List<Category> categoriesForReceipt = this.Receipts.Where(c => c.ID == id).Include("Categories").SingleOrDefault().Categories;
+
+            List<Category> toDelete = new List<Category>();
+            recToModify.AccountNumber = receipt.AccountNumber;
+            recToModify.StoreName = receipt.StoreName;
+            recToModify.Amount = receipt.Amount;
+            recToModify.Approver = receipt.Approver;
+            recToModify.TransactionDate = receipt.TransactionDate;
+            recToModify.TransactionType = receipt.TransactionType;
+
+
+            //If in DB but not new data, delete
+            foreach (var oldC in categoriesForReceipt)
+            {
+                if (receipt.Categories == null || receipt.Categories.Find(c => c.ID == oldC.ID) == null)
+                    toDelete.Add(oldC);
+            }
+
+            //Now remove them, cant remove from original while iterating
+            foreach (var d in toDelete)
+                categoriesForReceipt.Remove(d);
+
+            if (receipt.Categories != null)
+            {
+                foreach (var newC in receipt.Categories)
+                {
+
+                    var cToUpdate = categoriesForReceipt.Find(c => c.ID == newC.ID);
+                    if (cToUpdate != null)
+                    {
+                        cToUpdate.Amount = newC.Amount;
+                        cToUpdate.Description = newC.Description;
+                    }
+                    else
+                    {
+                        categoriesForReceipt.Add(newC);
+                    }
+                }
+            }
+        }
+
+        public void MarkAsModified(Receipt item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
     }
 }

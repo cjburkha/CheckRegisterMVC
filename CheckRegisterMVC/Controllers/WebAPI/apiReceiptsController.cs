@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using CheckRegisterMVC.Models;
-using Newtonsoft.Json;
-using CheckRegisterMVC.Data;
 
 namespace CheckRegisterMVC.Controllers.WebAPI
 {
     public class apiReceiptsController : ApiController
     {
-        private ReceiptContext db = new ReceiptContext();
+        private IReceiptContext db = new ReceiptContext();
 
+        public apiReceiptsController() { }
+
+        public apiReceiptsController(IReceiptContext context)
+        {
+            db = context;
+        }
         // GET: api/apiReceipts
         public IQueryable<Receipt> GetReceipts()
         {
@@ -56,7 +56,7 @@ namespace CheckRegisterMVC.Controllers.WebAPI
 
             //idea from //http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/updating-related-data-with-the-entity-framework-in-an-asp-net-mvc-application
             //tried this but added everytime //db.Categories.AddOrUpdate(c => c.ID, receipt.Categories.ToArray());
-            ReceiptRepository.copyChanges(id, receipt, ref db);
+            db.CopyChanges(id, receipt);
             
 
             //was

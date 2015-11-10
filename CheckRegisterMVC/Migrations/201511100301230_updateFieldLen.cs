@@ -1,8 +1,7 @@
 namespace CheckRegisterMVC.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class updateFieldLen : DbMigration
     {
         public override void Up()
