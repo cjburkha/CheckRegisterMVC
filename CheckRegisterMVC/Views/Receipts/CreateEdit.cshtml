@@ -113,13 +113,7 @@
     var addedCats = 0;
     function deleteCategory(ref)
     {
-        var containerDiv = ref.parentNode;
-        console.log(containerDiv);
-        console.log($(ref).parent());
-        /*if ($(ref).parent().attr('id') == 'CategoryDataTemplate')
-            alert('Cannot remove last category, for demo only. actual implementation would permit')
-        else*/
-            $(ref).parent().remove();
+        $(ref).parent().remove();
     }
 
     function newCategory()
@@ -128,24 +122,17 @@
         var $catData = $('#CategoryDataTemplate');
         var $AdditionalCatData = $('#AdditionalCategoryData');
         var $categoryHolder = $('<div class="categoryHolder"></div>');
-        var indexNodeHTML = '<input type="hidden" name="Categories.Index" value="a" />';//$catData.children()[0].outerHTML;
+        var indexNodeHTML = '<input type="hidden" name="Categories.Index" value="a" />';//set in js otherwise mvc thinks the template is an actual value
         var labelNodeHTML = $catData.children()[0].outerHTML;
         var inputNodeHTML = $catData.children()[1].outerHTML;
         var amountLabelNodeHTML = $catData.children()[2].outerHTML;
         var amountInputNodeHTML = $catData.children()[3].outerHTML;
         var deleteNodeHTML = $catData.children()[4].outerHTML;
 
-        //$catData.css('display', 'block');
-        console.log(indexNodeHTML);
-        console.log(labelNodeHTML);
         var IndexString = 'value="' + generateIndexAttribute(addedCats) + '"'
         indexNodeHTML = indexNodeHTML.replace('value="a"', IndexString)
         inputNodeHTML = inputNodeHTML.replace('[a]', '[' + generateIndexAttribute(addedCats) + ']');
         amountInputNodeHTML = amountInputNodeHTML.replace('[a]', '[' + generateIndexAttribute(addedCats) + ']');
-
-        console.log(indexNodeHTML);
-        console.log(inputNodeHTML);
-        console.log($categoryHolder);
 
         //append the new nodes to the additional data div
         $categoryHolder.append($(indexNodeHTML));

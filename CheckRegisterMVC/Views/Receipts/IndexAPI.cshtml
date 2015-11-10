@@ -140,49 +140,6 @@
     });
 
 
-    
-    //SINGLE / Edit
-    //App.controller('SingleReceiptCtrl', function ($scope, $http) {
-    //    $http.get(baseURL + '/11')
-    //      .then(function (res) {
-    //          // Storing the json data object as 'oneReceipt'
-    //          $scope.oneReceipt = res.data;
-    //      });
-    //    //$scope.updateStatus = function (id) {
-    //    //    console.log("updating");
-    //    //    $http({
-    //    //        url: baseURL + '/' + id,
-                
-    //    //    }).then(function (res) {
-    //    //        $scope.oneReceipt = res.data;  
-    //    //    });
-    //    //};
-
-    //    //$scope.loadDetail = loadSingleReceipt;
-
-        
-
-    //    $scope.save = function()
-    //    {
-    //        console.log('putting to ' + baseURL);
-    //        console.log(JSON.stringify($scope.oneReceipt));
-    //        var payload = JSON.stringify($scope.oneReceipt);
-    //        //PutReceipt
-    //        $http.put(baseURL + '/' + $scope.oneReceipt.ID, payload, $scope.oneReceipt, {
-    //            //url: baseURL + '/' + $scope.oneReceipt.ID,
-    //            //method: 'PUT',
-    //            //data: '{Receipt: ' + $scope.oneReceipt + '}'
-    //            //data: $scope.oneReceipt
-
-    //        }).then(function (res) {
-    //            //$scope.oneReceipt = res.data;
-    //            console.log('result of save was ' + res);
-    //        });
-    //    }
-    //});
-
-    
-
     function reloadList()
     {
         //this is not the right way to do it. there should be a service or something to handle inter controller
@@ -209,18 +166,7 @@
     //Outside of list controler because we need to load in detail
     function loadSingleReceipt(data)
     {
-
-        
-        var $singleView = $('#singleView');
-        
-        console.log($singleView);
-        //$singleView.show();
-        //createReceipt
-        //angular.element($('#singleView')[0]).scope().oneReceipt = data;
         angular.element($('#createReceipt')[0]).scope().edit(data);
-        
-
-        
     }
 
     function newReceipt()
@@ -287,25 +233,25 @@
     <!-- messy, we should have two controlers for edit / create with shared code-->
     <div id="createReceipt" ng-controller="CreateReceiptCtrl" style="display: none; width: 600px">
         <p style="font-weight: bold;">Create Receipt</p>
-        <p class="formLine">ID:</p><span ng-bind="newReceipt.ID"></span>
-        <p class="formLine">Transaction Date:<input type="text" ng-model="newReceipt.TransactionDate" ng-value="newReceipt.TransactionDate" /></p>
+        <p class="formLine">ID:<span ng-bind="newReceipt.ID"></span></p>
+        <p class="formLine">Transaction Date:<input type="text" ng-model="newReceipt.TransactionDate | date:'MM/dd/yyyy'"  /></p>
         <p class="formLine">
-            Transaction Type:<input type="number" ng-model="newReceipt.TransactionType" ng-value="newReceipt.TransactionType" />
+            Transaction Type:<input type="number" ng-model="newReceipt.TransactionType"  />
         <p class="formLine">
-            Account Number:<input type="text" ng-model="newReceipt.AccountNumber" ng-value="newReceipt.AccountNumber" />
+            Account Number:<input type="text" ng-model="newReceipt.AccountNumber" />
         <p class="formLine">
-            Store Name:<input type="text"ng-model="newReceipt.StoreName" ng-value="newReceipt.StoreName" />
+            Store Name:<input type="text"ng-model="newReceipt.StoreName"  />
         <p class="formLine">
-            Amount:<input type="number" ng-model="newReceipt.Amount" ng-value="newReceipt.Amount" />
+            Amount:<input type="number" ng-model="newReceipt.Amount"  />
         <p class="formLine">
-            Approver:<input type="text" ng-model="newReceipt.Approver" ng-value="newReceipt.Approver" />
+            Approver:<input type="text" ng-model="newReceipt.Approver"  />
         <div id="categories" style="border-width: 1px;">
             
             <p style="font-weight: bold; margin-top: 10px;">Categories</p>
             <p ng-repeat="Category in newReceipt.Categories">
                 
-                Description:<input type="text" ng-model="Category.Description" ng-value="Category.Description" />
-                Amount:<input type="number" ng-model="Category.Amount" ng-value="Category.Amount" />
+                Description:<input type="text" ng-model="Category.Description"  />
+                Amount:<input type="number" ng-model="Category.Amount" />
                 <img ng-click="removeCategory(Category)" src="~/images/icons/delete.png" />
 
             </p>
@@ -313,9 +259,9 @@
             <p class="formLine" style="color: red;" ng-show="error">Amounts of all categories must == Amount</p>
         </div>
         
-        <p>
-            <a ng-click="cancel();" >Cancel</a>
-            <a ng-click="add()">Save</a>
+        <p style="text-align: center; padding-top: 10px;">
+            <a ng-click="cancel();" >Cancel</a>&nbsp;&nbsp;
+            <a style="margin-left: 20px;" ng-click="add()">Save</a>
         </p>
     </div>
 

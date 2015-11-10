@@ -228,6 +228,10 @@
     <Compile Include="Migrations\201511100116047_categoryTTDropdown.Designer.cs">
       <DependentUpon>201511100116047_categoryTTDropdown.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511100301230_updateFieldLen.cs" />
+    <Compile Include="Migrations\201511100301230_updateFieldLen.Designer.cs">
+      <DependentUpon>201511100301230_updateFieldLen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CategoryOption.cs" />
@@ -1108,6 +1112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511100116047_categoryTTDropdown.resx">
       <DependentUpon>201511100116047_categoryTTDropdown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511100301230_updateFieldLen.resx">
+      <DependentUpon>201511100301230_updateFieldLen.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

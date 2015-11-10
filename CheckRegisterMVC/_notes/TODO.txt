@@ -1,5 +1,6 @@
-﻿1. Finish Edit View - includeing remove categories.
-2. Finish Delete
-2. Make categories and type dropdown
+﻿1. Finish Edit View - includeing remove categories. x
+2. Finish Delete x
+2. Make categories and type dropdown x
+3. some unit tests
 3. Angular help: http://tylermcginnis.com/angularjs-factory-vs-service-vs-provider/
 4. error handling in angular (Bad Request)
