@@ -14,6 +14,12 @@ namespace CheckRegisterMVC.Controllers
     {
         private IReceiptContext db = new ReceiptContext();
 
+        public ReceiptsController() { }
+
+        public ReceiptsController(IReceiptContext context)
+        {
+            db = context;
+        }
         // GET: Receipts/IndexAPI
         public ActionResult IndexAPI()
         {

@@ -91,6 +91,7 @@
 
         $scope.edit = function (data) {
             console.log("edit");
+            $scope.error = false;
             $("#createReceipt").show();
             $scope.newReceipt = data;
         }
@@ -128,7 +129,7 @@
                 catTotal = catTotal+  $scope.newReceipt.Categories[i].Amount + 0
             }
             console.log(catTotal)
-            return catTotal == $scope.newReceipt.Amount
+            return (catTotal == $scope.newReceipt.Amount || $scope.newReceipt.Categories.length == 0)
         }
 
         $scope.cancel = function () {
@@ -218,7 +219,7 @@
     <h2>CJB Sample Project - Angular</h2>
     
 </div>
-<div>
+<div ng-app="App">
 
     <div id="listView" ng-controller="ReceiptsCtrl" ng-show="display" style="width: 300px;">
         <ul>
@@ -232,9 +233,9 @@
 
     <!-- messy, we should have two controlers for edit / create with shared code-->
     <div id="createReceipt" ng-controller="CreateReceiptCtrl" style="display: none; width: 600px">
-        <p style="font-weight: bold;">Create Receipt</p>
+        <p style="font-weight: bold;">Create / Edit Receipt</p>
         <p class="formLine">ID:<span ng-bind="newReceipt.ID"></span></p>
-        <p class="formLine">Transaction Date:<input type="text" ng-model="newReceipt.TransactionDate | date:'MM/dd/yyyy'"  /></p>
+        <p class="formLine">Transaction Date:<input type="text" ng-model="newReceipt.TransactionDate"  /></p>
         <p class="formLine">
             Transaction Type:<input type="number" ng-model="newReceipt.TransactionType"  />
         <p class="formLine">

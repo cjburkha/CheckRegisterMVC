@@ -53,6 +53,7 @@ namespace CheckRegisterMVC.Models
             foreach (var d in toDelete)
                 categoriesForReceipt.Remove(d);
 
+            //add or update
             if (receipt.Categories != null)
             {
                 foreach (var newC in receipt.Categories)
@@ -66,6 +67,8 @@ namespace CheckRegisterMVC.Models
                     }
                     else
                     {
+                        //we get an ID of 0 from the UI on multiple adds
+                        newC.ID = -1;
                         categoriesForReceipt.Add(newC);
                     }
                 }

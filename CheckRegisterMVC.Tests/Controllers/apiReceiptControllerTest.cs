@@ -2,17 +2,16 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CheckRegisterMVC.Models;
 using System.Web.Http.Results;
-using CheckRegisterMVC.Controllers;
-using System.Web.Mvc;
+using CheckRegisterMVC.Controllers.WebAPI;
 using CheckRegisterMVC.Tests.Models;
 using System.Collections.Generic;
 
 namespace CheckRegisterMVC.Tests.Controllers
 {
     [TestClass]
-    public class ReceiptControllerTest
+    public class apiReceiptControllerTest
     {
-
+        
         //[TestMethod]
         //public void Index()
         //{
@@ -21,34 +20,20 @@ namespace CheckRegisterMVC.Tests.Controllers
 
         //    return View(db.Receipts.ToList());
         //}
-
-        public void Index()
-        {
-            // Arrange
-            ReceiptsController controller = new ReceiptsController();
-
-            // Act
-            ViewResult result = controller.Index() as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-        }
-
         [TestMethod]
-        //Refactor for Receipt controller
-        //public void GetProduct_ShouldReturnProductWithSameID()
-        //{
-        //    //db context, inject into controller
-        //    var context = new TestReceiptContext();
-        //    context.Receipts.Add(GetSingleReceipt());
+        public void GetProduct_ShouldReturnProductWithSameID()
+        {
+            //db context, inject into controller
+            var context = new TestReceiptContext();
+            context.Receipts.Add(GetSingleReceipt());
 
-        //    var controller = new ReceiptsController(context);
-        //    var result = controller.GetReceipt(3) as OkNegotiatedContentResult<Receipt>;
+            var controller = new apiReceiptsController(context);
+            var result = controller.GetReceipt(3) as OkNegotiatedContentResult<Receipt>;
 
-        //    Assert.IsNotNull(result);
-        //    Assert.AreEqual(3, result.Content.ID);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Content.ID);
 
-        //}
+        }
 
 
 

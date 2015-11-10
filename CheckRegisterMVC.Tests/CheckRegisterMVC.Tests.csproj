@@ -100,8 +100,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\TestReceiptDbSet.cs" />
     <Compile Include="Controllers\ReceiptControllerTest.cs" />
+    <Compile Include="Models\TestReceiptDbSet.cs" />
+    <Compile Include="Controllers\apiReceiptControllerTest.cs" />
     <Compile Include="Models\TestReceiptContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />

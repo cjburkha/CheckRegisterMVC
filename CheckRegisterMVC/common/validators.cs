@@ -21,7 +21,7 @@ namespace CheckRegisterMVC.common
         {
             List<Category> categories = (List<Category>)value;
             //No categories, validates. Categories are not required
-            if (categories == null)
+            if (categories == null || categories.Count == 0)
                 return null;
 
             var properties = this.PropertyNames.Select(validationContext.ObjectType.GetProperty);
