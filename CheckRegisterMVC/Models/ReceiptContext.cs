@@ -22,5 +22,9 @@ namespace CheckRegisterMVC.Models
         public System.Data.Entity.DbSet<CheckRegisterMVC.Models.Receipt> Receipts { get; set; }
 
         public System.Data.Entity.DbSet<CheckRegisterMVC.Models.Category> Categories { get; set; }
+
+        public System.Data.Entity.DbSet<CheckRegisterMVC.Models.CategoryOption> CategoryOptions { get; set; }
+
+        public System.Data.Entity.DbSet<CheckRegisterMVC.Models.TransactionType> TransactionTypes { get; set; }
     }
 }

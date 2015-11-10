@@ -50,6 +50,7 @@ namespace CheckRegisterMVC.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime TransactionDate { get; set; }
         [Display(Name = "Transaction Type")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value > 1")]
         public int TransactionType { get; set; }
         [Display(Name ="Store Name")]
         [Required]

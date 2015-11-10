@@ -48,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TransactionType, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TransactionType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.TransactionType, (IEnumerable<SelectListItem>)ViewBag.TransactionTypes, "Please Select")
                 @Html.ValidationMessageFor(model => model.TransactionType, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -89,6 +89,7 @@
                 <input type="hidden" name="Categories.Index" value="@i" />
                 <span>Description</span><input type="text" name="@("Categories[" + i + "].Description")" value="@Model.Categories[i].Description" />
                 <span>Amount</span><input type="text" name="@("Categories[" + i + "].Amount")" value="@Model.Categories[i].Amount" />
+                <input type="hidden" name="@("Categories[" + i + "].ID")"  value=" @Model.Categories[i].ID " />
                 <img src="~/images/icons/delete.png" onclick="deleteCategory(this);" />
             </div>
         }
@@ -169,20 +170,6 @@
     }
         </script>
                 
-        @*
-            works, except it runs for each one on postback
-            <fieldset style="border-width: 1px;">
-            <legend>@Html.DisplayNameFor(model => Model.Categories)</legend>
-            
-            <div class="form-group">
-
-                <div class="col-md-10">
-                    @Html.EditorFor(model => Model.Categories, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => Model.Categories, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </fieldset>*@
-      
         
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

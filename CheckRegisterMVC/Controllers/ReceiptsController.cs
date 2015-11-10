@@ -10,12 +10,13 @@ using CheckRegisterMVC.Models;
 using CheckRegisterMVC.Data;
 
 //all code from http://www.asp.net/mvc/overview/getting-started/introduction/getting-started
+//multiple context from here: http://www.codeproject.com/Tips/801628/Code-First-Migration-in-Multiple-DbContext
 namespace CheckRegisterMVC.Controllers
 {
     public class ReceiptsController : Controller
     {
         private ReceiptContext db = new ReceiptContext();
-        
+
         // GET: Receipts/IndexAPI
         public ActionResult IndexAPI()
         {
@@ -51,66 +52,20 @@ namespace CheckRegisterMVC.Controllers
         //https://evolpin.wordpress.com/2011/05/09/mvc-and-posting-data-using-html-beginform-and-url-routing/
         public ActionResult CreateEdit(int? id)
         {
+            
             Receipt receipt;
             if (id != null)
-                 receipt = db.Receipts.Where(c => c.ID == id).Include("Categories").SingleOrDefault();
+                receipt = db.Receipts.Where(c => c.ID == id).Include("Categories").SingleOrDefault();
             else
                 receipt = new Receipt();
+
+            PopulateTransactionTypeDropDown(receipt.TransactionType);
             return View("CreateEdit", receipt);
         }
 
-        // POST: Receipts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "ID,AccountNumber,TransactionDate,TransactionType,StoreName,Amount,Approver,Rebates,Categories")] Receipt receipt)
-        //{
-        //    var c = receipt;
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Receipts.Add(receipt);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View("CreateEdit", receipt);
-        //}
-
-        // GET: Receipts/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Receipt receipt = db.Receipts.Find(id);
-        //    if (receipt == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(receipt);
-        //}
-
-        // POST: Receipts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ID,AccountNumber,TransactionDate,TransactionType,StoreName,Amount,Approver, Rebates,Categories")] Receipt receipt)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(receipt).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(receipt);
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateEdit([Bind(Include = "ID,AccountNumber,TransactionDate,TransactionType,StoreName,Amount,Approver, Rebates,Categories")] Receipt receipt)
+        public ActionResult CreateEdit([Bind(Include = "ID,AccountNumber,TransactionDate,TransactionType,StoreName,Amount,Approver, Rebates,Categories, Category.ID")] Receipt receipt)
         {
             if (ModelState.IsValid)
             {
@@ -122,7 +77,6 @@ namespace CheckRegisterMVC.Controllers
                 else
                 {
                     //Edit
-                    //should be tracking changes from prior
                     //db.Entry(receipt).State = EntityState.Modified;
                     ReceiptRepository.copyChanges(receipt.ID, receipt, ref db);
                 }
@@ -132,6 +86,7 @@ namespace CheckRegisterMVC.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            PopulateTransactionTypeDropDown(receipt.TransactionType);
             return View(receipt);
         }
 
@@ -168,6 +123,14 @@ namespace CheckRegisterMVC.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        //http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/updating-related-data-with-the-entity-framework-in-an-asp-net-mvc-application
+        private void PopulateTransactionTypeDropDown(int TransactionType)
+        {
+            List<TransactionType> allTT = db.Set<TransactionType>().OrderBy(tt => tt.Ordinal).ToList();
+            //Optionally add "Please Select" here
+            ViewBag.TransactionTypes = new SelectList(allTT, "ID", "Description", TransactionType);
         }
     }
 }

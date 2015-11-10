@@ -21,7 +21,7 @@ namespace CheckRegisterMVC.common
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             List<Category> categories = (List<Category>)value;
-            //No categories, jump out
+            //No categories, validates. Categories are not required
             if (categories == null)
                 return null;
 

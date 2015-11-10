@@ -176,7 +176,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="common\validators.cs" />
-    <Compile Include="Controllers\CheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ReceiptsController.cs" />
@@ -225,10 +224,16 @@
     <Compile Include="Migrations\201511071539263_Annotations.Designer.cs">
       <DependentUpon>201511071539263_Annotations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511100116047_categoryTTDropdown.cs" />
+    <Compile Include="Migrations\201511100116047_categoryTTDropdown.Designer.cs">
+      <DependentUpon>201511100116047_categoryTTDropdown.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CategoryOption.cs" />
     <Compile Include="Models\Receipt.cs" />
     <Compile Include="Models\ReceiptContext.cs" />
+    <Compile Include="Models\TransactionType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1047,10 +1052,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Check\Index.cshtml" />
     <Content Include="Views\Receipts\CreateEdit.cshtml" />
     <Content Include="Views\Receipts\Delete.cshtml" />
     <Content Include="Views\Receipts\Details.cshtml" />
@@ -1103,6 +1105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511071539263_Annotations.resx">
       <DependentUpon>201511071539263_Annotations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511100116047_categoryTTDropdown.resx">
+      <DependentUpon>201511100116047_categoryTTDropdown.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
