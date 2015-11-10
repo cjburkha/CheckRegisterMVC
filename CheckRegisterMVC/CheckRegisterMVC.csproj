@@ -235,6 +235,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CategoryOption.cs" />
+    <Compile Include="Models\IReceiptContext.cs" />
     <Compile Include="Models\Receipt.cs" />
     <Compile Include="Models\ReceiptContext.cs" />
     <Compile Include="Models\TransactionType.cs" />

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace CheckRegisterMVC.Models
 {
-    public class ReceiptContext : DbContext
+    public class ReceiptContext : DbContext, IReceiptContext
     {
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -18,6 +18,16 @@ namespace CheckRegisterMVC.Models
         public ReceiptContext() : base("name=ReceiptContext")
         {
         }
+
+        public void MarkAsModified(Receipt item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
+
+        //public List<TransactionType> GetSet()
+        //{
+        //    return TransactionTypes.set
+        //}
 
         public System.Data.Entity.DbSet<CheckRegisterMVC.Models.Receipt> Receipts { get; set; }
 

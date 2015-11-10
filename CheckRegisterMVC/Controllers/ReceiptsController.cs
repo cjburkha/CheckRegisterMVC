@@ -128,8 +128,7 @@ namespace CheckRegisterMVC.Controllers
         //http://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/updating-related-data-with-the-entity-framework-in-an-asp-net-mvc-application
         private void PopulateTransactionTypeDropDown(int TransactionType)
         {
-            List<TransactionType> allTT = db.Set<TransactionType>().OrderBy(tt => tt.Ordinal).ToList();
-            //Optionally add "Please Select" here
+            List<TransactionType> allTT  = db.TransactionTypes.OrderBy(tt => tt.Ordinal).ToList();
             ViewBag.TransactionTypes = new SelectList(allTT, "ID", "Description", TransactionType);
         }
     }
