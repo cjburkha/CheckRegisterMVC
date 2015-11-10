@@ -36,7 +36,7 @@ namespace CheckRegisterMVC.Data
             //If in DB but not new data, delete
             foreach (var oldC in categories)
             {
-                if (receipt.Categories.Find(c => c.ID == oldC.ID) == null)
+                if (receipt.Categories == null || receipt.Categories.Find(c => c.ID == oldC.ID) == null)
                     toDelete.Add(oldC);
             }
 
@@ -44,20 +44,24 @@ namespace CheckRegisterMVC.Data
             foreach (var d in toDelete)
                 db.Categories.Remove(d);
 
-            foreach (var newC in receipt.Categories)
+            if (receipt.Categories != null)
             {
+                foreach (var newC in receipt.Categories)
+                {
 
-                var cToUpdate = categories.Find(c => c.ID == newC.ID);
-                if (cToUpdate != null)
-                {
-                    cToUpdate.Amount = newC.Amount;
-                    cToUpdate.Description = newC.Description;
-                }
-                else
-                {
-                    categories.Add(newC);
+                    var cToUpdate = categories.Find(c => c.ID == newC.ID);
+                    if (cToUpdate != null)
+                    {
+                        cToUpdate.Amount = newC.Amount;
+                        cToUpdate.Description = newC.Description;
+                    }
+                    else
+                    {
+                        categories.Add(newC);
+                    }
                 }
             }
+           
 
 
         }
