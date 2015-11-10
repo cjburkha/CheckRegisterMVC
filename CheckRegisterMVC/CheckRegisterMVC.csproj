@@ -1050,17 +1050,14 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Check\Index.cshtml" />
-    <Content Include="Views\Receipts\Create.cshtml" />
+    <Content Include="Views\Receipts\CreateEdit.cshtml" />
     <Content Include="Views\Receipts\Delete.cshtml" />
     <Content Include="Views\Receipts\Details.cshtml" />
     <Content Include="Views\Receipts\Edit.cshtml" />
     <Content Include="Views\Receipts\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Category.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Category.cshtml" />
-    <Content Include="Views\Home\delete_IndexAPI.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Receipts\IndexAPI.cshtml" />
   </ItemGroup>

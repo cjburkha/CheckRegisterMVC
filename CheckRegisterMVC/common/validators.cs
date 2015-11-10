@@ -21,6 +21,10 @@ namespace CheckRegisterMVC.common
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             List<Category> categories = (List<Category>)value;
+            //No categories, jump out
+            if (categories == null)
+                return null;
+
             var properties = this.PropertyNames.Select(validationContext.ObjectType.GetProperty);
             var values = properties.Select(p => p.GetValue(validationContext.ObjectInstance, null));
             var subTotals = categories.Sum(x => x.Amount);

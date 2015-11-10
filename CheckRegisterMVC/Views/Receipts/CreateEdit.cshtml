@@ -1,7 +1,7 @@
 ﻿@model CheckRegisterMVC.Models.Receipt
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create / Edit";
 }
 
 <h2>Create</h2>
@@ -17,7 +17,7 @@
 
 </style>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("CreateEdit")) 
 {
     @Html.AntiForgeryToken()
     
@@ -25,6 +25,10 @@
         <h4>Receipt</h4>
         <hr />
         @Html.ValidationSummary(true, "Please check all fields", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.ValueFor(model => model.ID)
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.AccountNumber, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -99,7 +103,7 @@
         <div id="AdditionalCategoryData"></div>
 
 
-        <p onclick="newCategory();">add category</p>
+        <a onclick="newCategory();">Add Category</a>
 
 
 
@@ -111,9 +115,9 @@
         var containerDiv = ref.parentNode;
         console.log(containerDiv);
         console.log($(ref).parent());
-        if ($(ref).parent().attr('id') == 'CategoryDataTemplate')
+        /*if ($(ref).parent().attr('id') == 'CategoryDataTemplate')
             alert('Cannot remove last category, for demo only. actual implementation would permit')
-        else
+        else*/
             $(ref).parent().remove();
     }
 
@@ -182,7 +186,7 @@
         
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" onclick="return customValid();" />
+                <input type="submit" value="Save" class="btn btn-default" onclick="return customValid();" />
             </div>
         </div>
     </div>

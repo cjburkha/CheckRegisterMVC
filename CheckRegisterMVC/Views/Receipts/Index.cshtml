@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "CreateEdit")
 </p>
 <table class="table">
     <tr>
@@ -29,16 +29,13 @@
         <th>
             @Html.DisplayNameFor(model => model.Approver)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Categories)
-        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.AccountNumber)
+            @Html.DisplayFor(modelItem => item.AccountNumber) : @Html.DisplayFor(modelItem => item.ID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TransactionDate)
@@ -56,10 +53,7 @@
             @Html.DisplayFor(modelItem => item.Approver)
         </td>
         <td>
-            @*@Html.DisplayFor(modelItem => item.Categories)*@
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Edit", "CreateEdit", new { id=item.ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
