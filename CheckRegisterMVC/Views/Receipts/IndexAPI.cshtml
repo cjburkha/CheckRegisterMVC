@@ -31,7 +31,7 @@
                 $scope.display = false;
                 loadSingleReceipt(res.data);
                 //IF error set $scope.error to error and it will show
-                $scope.display = "Saved";
+                $scope.display = false;
             });
         };
 
@@ -43,6 +43,16 @@
                 //fail of promise or http?
             });
         };
+        $scope.show = function () {
+            $scope.display = true;
+        }
+
+        $scope.hide = function () {
+            console.log('hiding');
+            $scope.display = false;
+            //don't understand the need for apply here.
+            $scope.$apply();
+        }
         $scope.loadAll();
 
     });
@@ -173,6 +183,7 @@
     function newReceipt()
     {
         angular.element($('#createReceipt')[0]).scope().createReceipt();
+        angular.element($('#listView')[0]).scope().hide();
     }
 
     function allReceiptsLoaded(payload)
@@ -221,20 +232,37 @@
 </div>
 <div ng-app="App">
 
-    <div id="listView" ng-controller="ReceiptsCtrl" ng-show="display" style="width: 300px;">
-        <ul>
-            <li ng-repeat="Receipt in receipts">
-                <p >{{Receipt.ID}} - {{Receipt.StoreName}} - {{Receipt.Amount}} <a ng-click="loadSingleReceipt(Receipt.ID);">Edit</a><img ng-click="deleteReceipt(Receipt.ID)" src="~/images/icons/delete.png" /></p>
-            </li>
-        </ul>
-
-
+    <div id="listView" ng-controller="ReceiptsCtrl" ng-show="display" >
+        <table class="table">
+            <tr>
+                <th>AccountNumber</th>
+                <th>Transaction Date</th>
+                <th>Transaction Type</th>
+                <th>Store Name</th>
+                <th>Amount</th>
+                <th>Approver</th>
+                <th>Actions</th>
+            </tr>
+            <tr ng-repeat="Receipt in receipts">
+                <td>{{Receipt.AccountNumber}} : {{Receipt.ID}}</td>
+                <td>{{Receipt.TransactionDate | date:'MM/dd/yyyy'}}</td>
+                <td>{{Receipt.TransactionType}}</td>
+                <td>{{Receipt.StoreName}}</td>
+                <td>{{Receipt.Amount}}</td>
+                <td>{{Receipt.Approver}}</td>
+                <td><a ng-click="loadSingleReceipt(Receipt.ID);">Edit</a><img style="padding-left: 5px;"  ng-click="deleteReceipt(Receipt.ID)" src="~/images/icons/delete.png" /></td>
+            </tr>
+        </table>
     </div>
 
     <!-- messy, we should have two controlers for edit / create with shared code-->
     <div id="createReceipt" ng-controller="CreateReceiptCtrl" style="display: none; width: 600px">
         <p style="font-weight: bold;">Create / Edit Receipt</p>
-        <p class="formLine">ID:<span ng-bind="newReceipt.ID"></span></p>
+   
+        <table>
+
+        </table>
+             <p class="formLine">ID:<span ng-bind="newReceipt.ID"></span></p>
         <p class="formLine">Transaction Date:<input type="text" ng-model="newReceipt.TransactionDate"  /></p>
         <p class="formLine">
             Transaction Type:<input type="number" ng-model="newReceipt.TransactionType"  />
