@@ -8,7 +8,7 @@ using CheckRegisterMVC.Tests.Models;
 
 namespace CheckRegisterMVC.Tests.Models
 {
-    class TestReceiptDbSet : TestDbSet<Receipt>
+    class ReceiptDbSetTest : TestDbSet<Receipt>
     {
         public override Receipt Find(params object[] keyValues)
         {

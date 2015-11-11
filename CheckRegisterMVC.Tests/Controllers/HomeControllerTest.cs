@@ -25,6 +25,7 @@ namespace CheckRegisterMVC.Tests.Controllers
             Assert.IsNotNull(result);
         }
 
+        [TestMethod]
         public void IndexAPI()
         {
             // Arrange

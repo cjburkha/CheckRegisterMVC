@@ -13,19 +13,12 @@ namespace CheckRegisterMVC.Tests.Controllers
     public class ReceiptControllerTest
     {
 
-        //[TestMethod]
-        //public void Index()
-        //{
-        //    HomeController controller = new HomeController();
-
-
-        //    return View(db.Receipts.ToList());
-        //}
-
+        [TestMethod]
         public void Index()
         {
+            var context = new ReceiptContextTest();
             // Arrange
-            ReceiptsController controller = new ReceiptsController();
+            ReceiptsController controller = new ReceiptsController(context);
 
             // Act
             ViewResult result = controller.Index() as ViewResult;
@@ -35,40 +28,30 @@ namespace CheckRegisterMVC.Tests.Controllers
         }
 
         [TestMethod]
-        //Refactor for Receipt controller
-        //public void GetProduct_ShouldReturnProductWithSameID()
-        //{
-        //    //db context, inject into controller
-        //    var context = new TestReceiptContext();
-        //    context.Receipts.Add(GetSingleReceipt());
-
-        //    var controller = new ReceiptsController(context);
-        //    var result = controller.GetReceipt(3) as OkNegotiatedContentResult<Receipt>;
-
-        //    Assert.IsNotNull(result);
-        //    Assert.AreEqual(3, result.Content.ID);
-
-        //}
-
-
-
-        public List<Receipt> GetReceipts()
+        public void Details_ShouldReturnReceiptWithSameID()
         {
-            List<Receipt> allReceipts = new List<Receipt>();
+            //db context, inject into controller
+            var context = new ReceiptContextTest();
+            context.Receipts.Add(context.GetSingleReceipt());
 
-            allReceipts.Add(new Receipt("55", DateTime.Parse("11/2/2015"), 1, "Best Buy", 5.56m, new List<Category> { new Category("Room", 5.56m) }, "Tom"));
-            allReceipts.Add(new Receipt("55", DateTime.Parse("11/5/2015"), 1, "Pick n save", 56.99m, new List<Category> { new Category("Bread", 56.99m) }, "Mike"));
-            allReceipts.Add(new Receipt("55", DateTime.Parse("11/5/2015"), 1, "Citgo", 5.05m, new List<Category> { new Category("Car", 5.05m) }, "Mike"));
-            return allReceipts;
+            var controller = new ReceiptsController(context);
+            var result = controller.Details(3) as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, ((Receipt)result.Model).ID);
 
         }
 
-        private Receipt GetSingleReceipt()
+        public void Edit_ShouldReturnUpdateReceipt()
         {
-            Receipt r = new Receipt("55", DateTime.Parse("11/2/2015"), 1, "Best Buy", 5.56m, new List<Category> { new Category("Room", 5.56m) }, "Tom");
-            r.ID = 3;
-            return r;
+            //db context, inject into controller
+            //Hard to test kind of testing database action.
+            //Would have to move out CopyChanges and make it injectible
 
         }
+
+
+
+
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 
+//Code and steps for all testing from here:
+//http://www.asp.net/web-api/overview/testing-and-debugging/mocking-entity-framework-when-unit-testing-aspnet-web-api-2
 namespace CheckRegisterMVC.Tests.Models
 {
     public class TestDbSet<T> : DbSet<T>, IQueryable, IEnumerable<T>
