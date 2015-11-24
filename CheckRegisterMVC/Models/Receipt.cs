@@ -9,7 +9,7 @@ namespace CheckRegisterMVC.Models
 
         public Receipt()
         {
-            
+
             this.AccountNumber = "55";
             this.TransactionDate = DateTime.Now;
             this.TransactionType = 1;
