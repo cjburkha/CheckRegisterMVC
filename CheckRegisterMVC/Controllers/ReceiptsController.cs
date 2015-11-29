@@ -68,7 +68,7 @@ namespace CheckRegisterMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateEdit([Bind(Include = "ID,AccountNumber,TransactionDate,TransactionType,StoreName,Amount,Approver, Rebates,Categories, Category.ID")] Receipt receipt)
+        public ActionResult CreateEdit(Receipt receipt)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,9 @@ namespace CheckRegisterMVC.Controllers
                 else
                 {
                     //Edit
-                    //db.Entry(receipt).State = EntityState.Modified;
+                    //Tried this based on feedback from Alper
+                    //db.MarkAsModified(receipt);
+                    //Custom copy from intro to code first with multiple objects
                     db.CopyChanges(receipt.ID, receipt);
                 }
 
